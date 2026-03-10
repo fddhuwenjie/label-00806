@@ -1,0 +1,36 @@
+<view class="container">
+  <!-- 标签页 -->
+  <view class="tabs">
+    <view class="tab-item {{currentTab === null ? 'active' : ''}}" bindtap="switchTab" data-status="">全部</view>
+    <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-status="0">待支付</view>
+    <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-status="1">待接单</view>
+    <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-status="2">配送中</view>
+    <view class="tab-item {{currentTab === 3 ? 'active' : ''}}" bindtap="switchTab" data-status="3">已完成</view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="order-list">
+    <view class="order-item" wx:for="{{orders}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="order-header">
+        <text class="merchant-name">{{item.merchantName}}</text>
+        <text class="order-status">{{item.statusText}}</text>
+      </view>
+      <view class="order-goods">
+        <view class="goods-item" wx:for="{{item.items}}" wx:for-item="goods" wx:key="id">
+          <image wx:if="{{goods.dishImage}}" class="goods-image" src="{{goods.dishImage}}" mode="aspectFill" />
+          <view wx:else class="goods-image-placeholder">🍽️</view>
+        </view>
+      </view>
+      <view class="order-footer">
+        <text class="order-time">{{item.createTime}}</text>
+        <text class="order-amount">实付 ¥{{item.actualAmount}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{orders.length === 0 && !loading}}">
+    <text class="empty-icon">📭</text>
+    <text class="empty-text">暂无订单</text>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "美味外卖",
+  "usingComponents": {
+    "skeleton": "/components/skeleton/skeleton"
+  },
+  "enablePullDownRefresh": true
+}

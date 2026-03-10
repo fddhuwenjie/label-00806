@@ -1,0 +1,258 @@
+.container {
+  min-height: 100vh;
+  background: #f7f8fa;
+  padding-bottom: 140rpx;
+}
+
+.status-bar {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F5E 100%);
+  padding: 48rpx 24rpx;
+  color: #fff;
+}
+
+.status-text {
+  font-size: 40rpx;
+  font-weight: 600;
+}
+
+.countdown {
+  margin-top: 16rpx;
+  display: flex;
+  align-items: center;
+}
+
+.countdown-label {
+  font-size: 26rpx;
+  opacity: 0.9;
+}
+
+.countdown-time {
+  font-size: 32rpx;
+  font-weight: 600;
+  background: rgba(255,255,255,0.2);
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  margin-left: 8rpx;
+}
+
+.status-hint {
+  margin-top: 16rpx;
+  font-size: 26rpx;
+  opacity: 0.85;
+}
+
+.address-card {
+  display: flex;
+  background: #fff;
+  margin: 24rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.address-icon {
+  font-size: 40rpx;
+  margin-right: 16rpx;
+}
+
+.address-info {
+  flex: 1;
+}
+
+.address-contact {
+  margin-bottom: 8rpx;
+}
+
+.address-contact .name {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-right: 24rpx;
+}
+
+.address-contact .phone {
+  font-size: 28rpx;
+  color: #646566;
+}
+
+.address-detail {
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.order-card {
+  background: #fff;
+  margin: 0 24rpx 24rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.merchant-name {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.goods-list {
+  padding: 0 24rpx;
+}
+
+.goods-item {
+  display: flex;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.goods-item:last-child {
+  border-bottom: none;
+}
+
+.goods-image {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 12rpx;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.goods-image-placeholder {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 12rpx;
+  margin-right: 24rpx;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  flex-shrink: 0;
+}
+
+.goods-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.goods-name {
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.goods-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.goods-price {
+  color: #FF6B35;
+  font-weight: 600;
+}
+
+.goods-quantity {
+  color: #969799;
+}
+
+.amount-card {
+  background: #fff;
+  margin: 0 24rpx 24rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.amount-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12rpx 0;
+  font-size: 28rpx;
+  color: #646566;
+}
+
+.amount-row.total {
+  border-top: 1rpx solid #f5f5f5;
+  margin-top: 12rpx;
+  padding-top: 24rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.total-price {
+  color: #FF6B35;
+  font-size: 36rpx;
+}
+
+.info-card {
+  background: #fff;
+  margin: 0 24rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12rpx 0;
+  font-size: 26rpx;
+}
+
+.info-label {
+  color: #969799;
+}
+
+.info-value {
+  color: #323233;
+}
+
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 24rpx;
+  display: flex;
+  justify-content: flex-end;
+  gap: 24rpx;
+  box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.action-btn {
+  height: 72rpx;
+  line-height: 72rpx;
+  padding: 0 48rpx;
+  border-radius: 36rpx;
+  font-size: 28rpx;
+}
+
+.action-btn.cancel {
+  background: #fff;
+  border: 1rpx solid #ddd;
+  color: #666;
+}
+
+.action-btn.back {
+  background: #fff;
+  border: 1rpx solid #ddd;
+  color: #666;
+}
+
+.action-btn.pay {
+  background: #07c160;
+  color: #fff;
+  border: none;
+}
+
+.action-btn.confirm {
+  background: #FF6B35;
+  color: #fff;
+  border: none;
+}
+
+.action-btn.delete {
+  background: #fff;
+  border: 1rpx solid #ee0a24;
+  color: #ee0a24;
+}

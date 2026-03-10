@@ -1,0 +1,605 @@
+// ========== 外卖平台管理后台 - 主题样式 ==========
+
+// 品牌色系 - 暖橙色调
+$primary-color: #FF6B35;
+$primary-light: #FF8F5E;
+$primary-lighter: #FFF3ED;
+$success-color: #52C41A;
+$warning-color: #FAAD14;
+$danger-color: #FF4D4F;
+$info-color: #1890FF;
+
+// 中性色
+$bg-color: #F0F2F5;
+$card-bg: #FFFFFF;
+$text-primary: #1F2937;
+$text-regular: #6B7280;
+$text-light: #9CA3AF;
+$border-color: #E5E7EB;
+$border-radius: 12px;
+$border-radius-sm: 8px;
+
+// 间距
+$spacing-xs: 8px;
+$spacing-sm: 12px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// 阴影
+$shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+$shadow-md: 0 4px 6px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.06);
+$shadow-lg: 0 10px 25px rgba(0,0,0,0.06), 0 4px 10px rgba(0,0,0,0.04);
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+// ========== Element Plus 主题覆盖 ==========
+:root {
+  --el-color-primary: #{$primary-color};
+  --el-color-primary-light-3: #{$primary-light};
+  --el-color-primary-light-5: #FFB899;
+  --el-color-primary-light-7: #FFD4BF;
+  --el-color-primary-light-9: #{$primary-lighter};
+  --el-border-radius-base: #{$border-radius-sm};
+}
+
+// ========== 布局 ==========
+.layout {
+  display: flex;
+  height: 100%;
+}
+
+.sidebar {
+  width: 220px;
+  background: #1E1E2D;
+  color: #fff;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .logo {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+
+      svg {
+        width: 22px;
+        height: 22px;
+        color: #fff;
+      }
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .el-menu {
+    border-right: none;
+    background: transparent;
+    padding: 8px;
+    flex: 1;
+    overflow-y: auto;
+
+    .el-menu-item {
+      color: rgba(255,255,255,0.6);
+      border-radius: $border-radius-sm;
+      margin: 2px 0;
+      height: 44px;
+      line-height: 44px;
+      font-size: 14px;
+      transition: all 0.2s;
+
+      &:hover {
+        background: rgba(255,255,255,0.06);
+        color: rgba(255,255,255,0.9);
+      }
+
+      &.is-active {
+        background: $primary-color;
+        color: #fff;
+        font-weight: 500;
+
+        .el-icon { color: #fff; }
+      }
+
+      .el-icon {
+        font-size: 18px;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: $bg-color;
+}
+
+.header {
+  height: 56px;
+  background: $card-bg;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $spacing-lg;
+  border-bottom: 1px solid $border-color;
+}
+
+.content {
+  flex: 1;
+  padding: $spacing-lg;
+  overflow-y: auto;
+}
+
+// ========== 页面卡片 ==========
+.page-card {
+  background: $card-bg;
+  border-radius: $border-radius;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-lg;
+
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      color: $text-primary;
+      position: relative;
+      padding-left: 12px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 20px;
+        background: $primary-color;
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+// ========== 搜索栏 ==========
+.search-bar {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+  flex-wrap: wrap;
+  padding: $spacing-md;
+  background: #FAFBFC;
+  border-radius: $border-radius-sm;
+  border: 1px solid $border-color;
+}
+
+// ========== 表格 ==========
+.el-table {
+  border-radius: $border-radius-sm;
+
+  th.el-table__cell {
+    background: #FAFBFC !important;
+    color: $text-regular;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  td.el-table__cell {
+    color: $text-primary;
+    font-size: 14px;
+  }
+
+  .el-table__row:hover > td.el-table__cell {
+    background: $primary-lighter !important;
+  }
+}
+
+// ========== 分页 ==========
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: $spacing-lg;
+  padding-top: 0;
+}
+
+// ========== Dashboard 统计卡片 ==========
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.stat-card {
+  background: $card-bg;
+  border-radius: $border-radius;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 0 0 0 80px;
+    opacity: 0.08;
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: $spacing-sm;
+  }
+
+  .stat-title {
+    font-size: 13px;
+    color: $text-light;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: $text-primary;
+    line-height: 1.2;
+  }
+
+  .stat-footer {
+    margin-top: $spacing-sm;
+    font-size: 12px;
+    color: $text-light;
+  }
+
+  &.primary {
+    border-top: 3px solid $primary-color;
+    .stat-icon { background: $primary-lighter; color: $primary-color; }
+    &::after { background: $primary-color; }
+  }
+  &.success {
+    border-top: 3px solid $success-color;
+    .stat-icon { background: #F0FFF0; color: $success-color; }
+    &::after { background: $success-color; }
+  }
+  &.warning {
+    border-top: 3px solid $warning-color;
+    .stat-icon { background: #FFFBE6; color: $warning-color; }
+    &::after { background: $warning-color; }
+  }
+  &.info {
+    border-top: 3px solid $info-color;
+    .stat-icon { background: #E6F7FF; color: $info-color; }
+    &::after { background: $info-color; }
+  }
+}
+
+// ========== 登录页 ==========
+.login-container {
+  height: 100%;
+  display: flex;
+  background: #F8F9FB;
+  position: relative;
+  overflow: hidden;
+
+  .login-left {
+    flex: 1;
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8F5E 40%, #FFB088 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+      top: -100px;
+      left: -100px;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+      bottom: -80px;
+      right: -60px;
+    }
+
+    .login-brand {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: #fff;
+
+      .brand-icon {
+        font-size: 72px;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+
+      p {
+        font-size: 16px;
+        opacity: 0.85;
+        line-height: 1.6;
+      }
+    }
+  }
+
+  .login-right {
+    width: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 380px;
+
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+
+      .logo-icon {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+
+        svg {
+          width: 26px;
+          height: 26px;
+          color: #fff;
+        }
+      }
+
+      .logo-text {
+        font-size: 22px;
+        font-weight: 700;
+        color: $text-primary;
+      }
+    }
+
+    .login-title {
+      font-size: 14px;
+      color: $text-light;
+      margin-bottom: 32px;
+    }
+
+    .el-input {
+      height: 44px;
+
+      .el-input__wrapper {
+        border-radius: $border-radius-sm;
+        box-shadow: 0 0 0 1px $border-color inset;
+
+        &:hover { box-shadow: 0 0 0 1px $primary-light inset; }
+        &.is-focus { box-shadow: 0 0 0 1px $primary-color inset; }
+      }
+    }
+
+    .el-button--primary {
+      width: 100%;
+      height: 44px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: $border-radius-sm;
+      background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
+      border: none;
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+      transition: all 0.2s;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+      }
+    }
+  }
+}
+
+// ========== 通用 ==========
+.form-tip {
+  margin-left: 8px;
+  color: $text-light;
+  font-size: 12px;
+}
+
+// 弹窗美化
+.el-dialog {
+  border-radius: $border-radius !important;
+
+  .el-dialog__header {
+    border-bottom: 1px solid $border-color;
+    padding: $spacing-md $spacing-lg;
+    margin: 0;
+  }
+
+  .el-dialog__body {
+    padding: $spacing-lg;
+  }
+
+  .el-dialog__footer {
+    border-top: 1px solid $border-color;
+    padding: $spacing-md $spacing-lg;
+  }
+}
+
+// Tag 美化
+.el-tag--success {
+  background: #F0FFF0;
+  color: $success-color;
+  border-color: #B7EB8F;
+}
+
+.el-tag--danger {
+  background: #FFF1F0;
+  color: $danger-color;
+  border-color: #FFA39E;
+}
+
+.el-tag--warning {
+  background: #FFFBE6;
+  color: #D48806;
+  border-color: #FFE58F;
+}
+
+.el-tag--info {
+  background: #F5F5F5;
+  color: $text-regular;
+  border-color: #D9D9D9;
+}
+
+// 按钮美化
+.el-button--primary {
+  background: $primary-color;
+  border-color: $primary-color;
+
+  &:hover, &:focus {
+    background: $primary-light;
+    border-color: $primary-light;
+  }
+}
+
+// 空状态
+.el-empty__description p {
+  color: $text-light;
+}
+
+// 删除确认弹窗美化
+.el-popconfirm {
+  padding: 16px 20px !important;
+  
+  .el-popconfirm__main {
+    margin-bottom: 14px;
+    
+    .el-popconfirm__icon {
+      font-size: 20px;
+      color: $warning-color;
+      margin-right: 10px;
+    }
+    
+    .el-popconfirm__title {
+      font-size: 14px;
+      color: $text-primary;
+      font-weight: 500;
+    }
+  }
+  
+  .el-popconfirm__action {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    
+    .el-button {
+      min-width: 64px;
+      height: 32px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 0 14px;
+      
+      &--primary {
+        background: $danger-color;
+        border-color: $danger-color;
+        
+        &:hover, &:focus {
+          background: #FF7875;
+          border-color: #FF7875;
+        }
+      }
+    }
+  }
+}
+
+// Popover 基础样式
+.el-popper.is-light {
+  border-radius: 10px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid #F0F0F0 !important;
+}
+
+// 滚动条
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}

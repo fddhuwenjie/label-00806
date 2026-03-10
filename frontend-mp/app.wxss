@@ -1,0 +1,79 @@
+/* 全局样式 */
+page {
+  background-color: #f7f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 28rpx;
+  color: #323233;
+  box-sizing: border-box;
+}
+
+/* 主色调 */
+.primary-color { color: #FF6B35; }
+.primary-bg { background-color: #FF6B35; }
+
+/* 卡片 */
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  margin: 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+}
+
+/* 按钮 */
+.btn-primary {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F5E 100%);
+  color: #fff;
+  border: none;
+  border-radius: 44rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+/* Flex 布局 */
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-1 { flex: 1; }
+
+/* 文字 */
+.text-gray { color: #969799; }
+.text-price { color: #FF6B35; font-weight: bold; }
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 间距 */
+.mt-16 { margin-top: 16rpx; }
+.mt-24 { margin-top: 24rpx; }
+.mb-16 { margin-bottom: 16rpx; }
+.mb-24 { margin-bottom: 24rpx; }
+.p-24 { padding: 24rpx; }
+
+/* 空状态 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  color: #969799;
+  font-size: 28rpx;
+}

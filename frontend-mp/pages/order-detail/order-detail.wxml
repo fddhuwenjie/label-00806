@@ -1,0 +1,94 @@
+<view class="container">
+  <view class="status-bar">
+    <text class="status-text">{{order.statusText || '加载中...'}}</text>
+    <view class="countdown" wx:if="{{order.status === 0 && countdown}}">
+      <text class="countdown-label">支付剩余时间：</text>
+      <text class="countdown-time">{{countdown}}</text>
+    </view>
+    <view class="status-hint" wx:if="{{order.status === 1}}">
+      <text>等待商家接单中，下拉刷新查看最新状态</text>
+    </view>
+  </view>
+
+  <view class="address-card" wx:if="{{addressInfo}}">
+    <view class="address-icon">📍</view>
+    <view class="address-info">
+      <view class="address-contact">
+        <text class="name">{{addressInfo.contactName}}</text>
+        <text class="phone">{{addressInfo.contactPhone}}</text>
+      </view>
+      <view class="address-detail">{{addressInfo.province}}{{addressInfo.city}}{{addressInfo.district}}{{addressInfo.detail}}</view>
+    </view>
+  </view>
+
+  <view class="order-card">
+    <view class="card-header">
+      <text class="merchant-name">{{order.merchantName}}</text>
+    </view>
+    <view class="goods-list">
+      <view class="goods-item" wx:for="{{order.items}}" wx:key="id">
+        <image wx:if="{{item.dishImage}}" class="goods-image" src="{{item.dishImage}}" mode="aspectFill" />
+        <view wx:else class="goods-image-placeholder">🍽️</view>
+        <view class="goods-info">
+          <view class="goods-name">{{item.dishName}}</view>
+          <view class="goods-bottom">
+            <text class="goods-price">¥{{item.dishPrice}}</text>
+            <text class="goods-quantity">x{{item.quantity}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="amount-card">
+    <view class="amount-row">
+      <text>商品金额</text>
+      <text>¥{{order.totalAmount}}</text>
+    </view>
+    <view class="amount-row">
+      <text>配送费</text>
+      <text>¥{{order.deliveryFee}}</text>
+    </view>
+    <view class="amount-row total">
+      <text>实付金额</text>
+      <text class="total-price">¥{{order.actualAmount}}</text>
+    </view>
+  </view>
+
+  <view class="info-card">
+    <view class="info-row">
+      <text class="info-label">订单编号</text>
+      <text class="info-value">{{order.orderNo}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">下单时间</text>
+      <text class="info-value">{{order.createTimeFormatted || order.createTime || '-'}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.payTimeFormatted}}">
+      <text class="info-label">支付时间</text>
+      <text class="info-value">{{order.payTimeFormatted}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.deliverTimeFormatted}}">
+      <text class="info-label">配送时间</text>
+      <text class="info-value">{{order.deliverTimeFormatted}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.completeTimeFormatted}}">
+      <text class="info-label">完成时间</text>
+      <text class="info-value">{{order.completeTimeFormatted}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.remark}}">
+      <text class="info-label">备注</text>
+      <text class="info-value">{{order.remark}}</text>
+    </view>
+  </view>
+
+  <view class="action-bar" wx:if="{{order.status === 0 || order.status === 2 || order.status === 3 || order.status === 4}}">
+    <!-- 从提交订单进入：显示返回按钮 -->
+    <button class="action-btn back" wx:if="{{order.status === 0 && fromSubmit}}" bindtap="goToOrderList">返回</button>
+    <!-- 从订单列表进入：显示取消订单按钮 -->
+    <button class="action-btn cancel" wx:if="{{order.status === 0 && !fromSubmit}}" bindtap="cancelOrder">取消订单</button>
+    <button class="action-btn pay" wx:if="{{order.status === 0}}" bindtap="payOrder">立即支付</button>
+    <button class="action-btn confirm" wx:if="{{order.status === 2}}" bindtap="confirmOrder">确认收货</button>
+    <button class="action-btn delete" wx:if="{{order.status === 3 || order.status === 4}}" bindtap="deleteOrder">删除订单</button>
+  </view>
+</view>

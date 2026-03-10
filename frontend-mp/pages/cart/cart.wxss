@@ -1,0 +1,213 @@
+.container {
+  min-height: 100vh;
+  background: #f7f8fa;
+  padding-bottom: 140rpx;
+}
+
+.address-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 32rpx 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.address-info {
+  flex: 1;
+}
+
+.address-contact {
+  margin-bottom: 12rpx;
+}
+
+.address-contact .name {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-right: 24rpx;
+}
+
+.address-contact .phone {
+  font-size: 28rpx;
+  color: #646566;
+}
+
+.address-detail {
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.address-empty {
+  flex: 1;
+  color: #969799;
+}
+
+.arrow {
+  color: #969799;
+  font-size: 32rpx;
+}
+
+.cart-card {
+  background: #fff;
+  margin: 0 24rpx 24rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.cart-header {
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.merchant-name {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.cart-item {
+  display: flex;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.item-image-placeholder {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  margin-right: 24rpx;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  flex-shrink: 0;
+}
+
+.item-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.item-name {
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.item-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-price {
+  color: #FF6B35;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.item-quantity {
+  color: #969799;
+  font-size: 26rpx;
+}
+
+.remark-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  margin: 0 24rpx 24rpx;
+  padding: 24rpx;
+  border-radius: 16rpx;
+}
+
+.remark-card .label {
+  font-size: 28rpx;
+  color: #323233;
+  margin-right: 24rpx;
+}
+
+.remark-input {
+  flex: 1;
+  font-size: 28rpx;
+}
+
+.amount-card {
+  background: #fff;
+  margin: 0 24rpx;
+  padding: 24rpx;
+  border-radius: 16rpx;
+}
+
+.amount-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12rpx 0;
+  font-size: 28rpx;
+  color: #646566;
+}
+
+.amount-row.total {
+  border-top: 1rpx solid #f5f5f5;
+  margin-top: 12rpx;
+  padding-top: 24rpx;
+  color: #323233;
+  font-weight: 600;
+}
+
+.total-price {
+  color: #FF6B35;
+  font-size: 36rpx;
+}
+
+.submit-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24rpx;
+  box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.05);
+  z-index: 100;
+}
+
+.submit-price {
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.submit-price .price {
+  color: #FF6B35;
+  font-size: 40rpx;
+  font-weight: 600;
+  margin-left: 8rpx;
+}
+
+.submit-btn {
+  width: 240rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F5E 100%);
+  color: #fff;
+  border: none;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

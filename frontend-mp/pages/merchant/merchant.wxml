@@ -1,0 +1,73 @@
+<view class="page">
+  <!-- 商家信息 -->
+  <view class="header">
+    <image wx:if="{{merchant.logo}}" class="logo" src="{{merchant.logo}}" mode="aspectFill"/>
+    <view wx:else class="logo-placeholder">🏪</view>
+    <view class="info">
+      <view class="name">{{merchant.name}}</view>
+      <view class="meta">月售{{merchant.monthlySales || 0}}</view>
+      <view class="meta">起送¥{{merchant.minPrice || 0}} | 配送¥{{merchant.deliveryFee || 0}}</view>
+    </view>
+  </view>
+
+  <!-- 菜品列表 -->
+  <view class="main">
+    <!-- 左侧分类 -->
+    <scroll-view class="cate-list" scroll-y>
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="index"
+        class="cate-item {{currentCate === index ? 'active' : ''}}"
+        data-index="{{index}}"
+        bindtap="onTapCate"
+      >{{item.category.name}}</view>
+    </scroll-view>
+
+    <!-- 右侧菜品 -->
+    <scroll-view class="dish-list" scroll-y scroll-into-view="{{scrollId}}">
+      <block wx:for="{{categories}}" wx:key="index">
+        <view id="cate{{index}}" class="dish-group">
+          <view class="group-title">{{item.category.name}}</view>
+          <block wx:for="{{item.dishes}}" wx:for-item="dish" wx:key="id">
+            <view class="dish-card">
+              <view class="dish-img-wrap">
+                <image wx:if="{{dish.image}}" class="dish-img" src="{{dish.image}}" mode="aspectFill"/>
+                <view wx:else class="dish-img-default">🍽️</view>
+              </view>
+              <view class="dish-info">
+                <view class="dish-name">{{dish.name}}</view>
+                <view class="dish-desc">{{dish.description || ''}}</view>
+                <view class="dish-bottom">
+                  <text class="dish-price">¥{{dish.price}}</text>
+                  <view class="counter">
+                    <view wx:if="{{dish.num > 0}}" class="btn minus" data-id="{{dish.id}}" data-cartid="{{dish.cartId}}" data-num="{{dish.num}}" bindtap="onMinus">-</view>
+                    <text wx:if="{{dish.num > 0}}" class="num">{{dish.num}}</text>
+                    <view class="btn plus" data-id="{{dish.id}}" bindtap="onPlus">+</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </block>
+      <view class="bottom-space"></view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部购物栏 -->
+  <view class="footer">
+    <view class="cart-info">
+      <view class="cart-icon">🛒
+        <view wx:if="{{cartNum > 0}}" class="badge">{{cartNum}}</view>
+      </view>
+      <view wx:if="{{cartNum > 0}}" class="cart-detail">
+        <text class="total">¥{{cartTotal}}</text>
+        <text class="tip">另需配送费¥{{merchant.deliveryFee || 0}}</text>
+      </view>
+      <text wx:else class="empty">购物车是空的</text>
+    </view>
+    <view class="pay-btn {{canPay ? 'active' : ''}}" bindtap="onPay">
+      {{payText}}
+    </view>
+  </view>
+</view>

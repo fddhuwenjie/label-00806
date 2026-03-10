@@ -1,0 +1,47 @@
+# 生产环境配置
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 50
+      idle-timeout: 30000
+      max-lifetime: 1800000
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
+
+# 生产环境日志级别
+logging:
+  level:
+    root: WARN
+    com.fooddelivery: INFO
+    org.springframework.web: WARN
+  file:
+    name: /var/log/food-delivery/app.log
+    max-size: 50MB
+    max-history: 90
+
+# 生产环境禁用 Swagger
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
+
+# 生产环境 Actuator 限制访问
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: never

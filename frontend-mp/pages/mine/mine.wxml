@@ -1,0 +1,54 @@
+<view class="page">
+  <!-- 顶部用户区域 -->
+  <view class="header">
+    <view class="user-section">
+      <!-- 头像 -->
+      <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image wx:if="{{userInfo.avatar}}" class="avatar" src="{{userInfo.avatar}}" mode="aspectFill" />
+        <view wx:else class="avatar-placeholder">👤</view>
+      </button>
+      
+      <!-- 用户信息 -->
+      <view class="user-info" wx:if="{{isLogin}}">
+        <input type="nickname" class="nickname" placeholder="设置昵称" placeholder-class="nickname-ph" value="{{userInfo.nickname}}" bindblur="onNicknameBlur" />
+        <view class="phone-row" bindtap="editPhone">
+          <text class="phone">{{userInfo.phone || '点击绑定手机号'}}</text>
+        </view>
+      </view>
+      
+      <!-- 未登录 -->
+      <view class="login-section" wx:else bindtap="onLogin">
+        <text class="login-text">点击登录</text>
+        <text class="login-tip">登录享受更多服务</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-card">
+    <view class="menu-item" bindtap="goAddress">
+      <view class="menu-left">
+        <view class="menu-icon" style="background: #FFF3ED;">📍</view>
+        <text class="menu-text">收货地址</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goAbout">
+      <view class="menu-left">
+        <view class="menu-icon" style="background: #E8F5E9;">ℹ️</view>
+        <text class="menu-text">关于我们</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section" wx:if="{{isLogin}}">
+    <button class="logout-btn" bindtap="logout">退出登录</button>
+  </view>
+
+  <!-- 底部版权 -->
+  <view class="footer">
+    <text>美味外卖 · 让生活更美味</text>
+  </view>
+</view>

@@ -1,0 +1,14 @@
+{
+  "name": "food-delivery-mp",
+  "version": "1.0.0",
+  "description": "外卖平台微信小程序",
+  "scripts": {
+    "lint": "eslint . --ext .js --fix",
+    "lint:check": "eslint . --ext .js",
+    "test": "miniprogram-simulate"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "miniprogram-simulate": "^1.6.1"
+  }
+}

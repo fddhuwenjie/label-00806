@@ -1,0 +1,61 @@
+.skeleton {
+  padding: 24rpx;
+}
+
+.skeleton-item {
+  display: flex;
+  padding: 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.skeleton-avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+  background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 50%, #f2f2f2 75%);
+  background-size: 200% 100%;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.skeleton-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.skeleton-title {
+  width: 60%;
+  height: 32rpx;
+  background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 50%, #f2f2f2 75%);
+  background-size: 200% 100%;
+  border-radius: 4rpx;
+}
+
+.skeleton-row {
+  width: 100%;
+  height: 24rpx;
+  background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 50%, #f2f2f2 75%);
+  background-size: 200% 100%;
+  border-radius: 4rpx;
+}
+
+.skeleton-row.short {
+  width: 70%;
+}
+
+.skeleton-animate {
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

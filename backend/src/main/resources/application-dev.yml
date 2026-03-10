@@ -1,0 +1,37 @@
+# 开发环境配置
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/food_delivery?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 10
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+# 开发环境日志级别
+logging:
+  level:
+    com.fooddelivery: DEBUG
+    org.springframework.web: DEBUG
+
+# 开发环境启用 Swagger
+springdoc:
+  swagger-ui:
+    enabled: true
+
+# 开发环境 Actuator 全部开放
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

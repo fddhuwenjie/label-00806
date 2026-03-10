@@ -1,0 +1,66 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input">
+      <text class="search-icon">🔍</text>
+      <input placeholder="搜索商家" value="{{keyword}}" bindinput="onSearchInput" confirm-type="search" bindconfirm="onSearch" />
+    </view>
+  </view>
+
+  <!-- 商家列表 -->
+  <scroll-view 
+    class="merchant-list" 
+    scroll-y 
+    enhanced
+    show-scrollbar="{{showScrollbar}}"
+    bindscrolltolower="loadMore"
+    lower-threshold="100"
+    refresher-enabled
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+  >
+    <view class="merchant-item" wx:for="{{merchants}}" wx:key="id" bindtap="goMerchant" data-id="{{item.id}}">
+      <image 
+        wx:if="{{item.logo}}"
+        class="merchant-logo" 
+        src="{{item.logo}}" 
+        mode="aspectFill"
+        lazy-load
+        show-menu-by-longpress
+      />
+      <view wx:else class="merchant-logo-placeholder">🏪</view>
+      <view class="merchant-info">
+        <view class="merchant-name">{{item.name}}</view>
+        <view class="merchant-meta">
+          <text class="sales">月售{{item.monthlySales || 0}}</text>
+        </view>
+        <view class="merchant-delivery">
+          <text>起送¥{{item.minPrice || 0}}</text>
+          <text class="divider">|</text>
+          <text>配送¥{{item.deliveryFee || 0}}</text>
+          <text class="divider">|</text>
+          <text>{{item.deliveryTime || '30-45分钟'}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 加载更多提示 -->
+    <view class="load-more" wx:if="{{merchants.length > 0}}">
+      <text wx:if="{{loading}}">加载中...</text>
+      <text wx:elif="{{!hasMore}}">没有更多了</text>
+    </view>
+  </scroll-view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{merchants.length === 0 && !loading}}">
+    <text class="empty-icon">📭</text>
+    <text class="empty-text">{{keyword ? '未找到相关商家' : '暂无商家'}}</text>
+    <button class="empty-btn" wx:if="{{keyword}}" bindtap="clearSearch">清除搜索</button>
+  </view>
+  
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading && merchants.length === 0}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

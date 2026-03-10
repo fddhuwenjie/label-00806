@@ -1,0 +1,90 @@
+.container {
+  min-height: 100vh;
+  background: #f7f8fa;
+  padding-bottom: 140rpx;
+}
+
+.address-list {
+  padding: 24rpx;
+}
+
+.address-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.address-info {
+  flex: 1;
+}
+
+.address-contact {
+  margin-bottom: 12rpx;
+}
+
+.address-contact .name {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-right: 16rpx;
+}
+
+.address-contact .phone {
+  font-size: 28rpx;
+  color: #646566;
+  margin-right: 16rpx;
+}
+
+.default-tag {
+  font-size: 22rpx;
+  color: #FF6B35;
+  border: 1rpx solid #FF6B35;
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+}
+
+.address-detail {
+  font-size: 28rpx;
+  color: #323233;
+}
+
+.address-edit {
+  color: #FF6B35;
+  font-size: 28rpx;
+  padding: 16rpx;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #969799;
+}
+
+.add-btn {
+  position: fixed;
+  bottom: 48rpx;
+  left: 24rpx;
+  right: 24rpx;
+  height: 88rpx;
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8F5E 100%);
+  color: #fff;
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(255, 107, 53, 0.3);
+}

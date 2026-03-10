@@ -1,0 +1,133 @@
+.container {
+  min-height: 100vh;
+  background: #f7f8fa;
+  padding-bottom: 120rpx;
+}
+
+.tabs {
+  display: flex;
+  background: #fff;
+  padding: 0 12rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 0;
+  font-size: 28rpx;
+  color: #646566;
+  position: relative;
+}
+
+.tab-item.active {
+  color: #FF6B35;
+  font-weight: 600;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 6rpx;
+  background: #FF6B35;
+  border-radius: 3rpx;
+}
+
+.order-list {
+  padding: 24rpx;
+}
+
+.order-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.merchant-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #323233;
+}
+
+.order-status {
+  font-size: 26rpx;
+  color: #FF6B35;
+}
+
+.order-goods {
+  display: flex;
+  padding: 20rpx 0;
+  overflow-x: auto;
+}
+
+.goods-item {
+  flex-shrink: 0;
+  margin-right: 16rpx;
+}
+
+.goods-image-placeholder {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+}
+
+.goods-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #969799;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.order-time {
+  font-size: 24rpx;
+  color: #969799;
+}
+
+.order-amount {
+  font-size: 28rpx;
+  color: #323233;
+  font-weight: 600;
+}

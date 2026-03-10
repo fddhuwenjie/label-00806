@@ -1,0 +1,65 @@
+<view class="container">
+  <!-- 地址 -->
+  <view class="address-card" bindtap="selectAddress">
+    <view wx:if="{{address}}" class="address-info">
+      <view class="address-contact">
+        <text class="name">{{address.contactName}}</text>
+        <text class="phone">{{address.contactPhone}}</text>
+      </view>
+      <view class="address-detail">{{address.province}}{{address.city}}{{address.district}}{{address.detail}}</view>
+    </view>
+    <view wx:else class="address-empty">
+      <text>请选择收货地址</text>
+    </view>
+    <view class="arrow">></view>
+  </view>
+
+  <!-- 商品列表 -->
+  <view class="cart-card">
+    <view class="cart-header">
+      <text class="merchant-name">{{merchantName}}</text>
+    </view>
+    <view class="cart-item" wx:for="{{cartItems}}" wx:key="id">
+      <image wx:if="{{item.dishImage}}" class="item-image" src="{{item.dishImage}}" mode="aspectFill" />
+      <view wx:else class="item-image-placeholder">🍽️</view>
+      <view class="item-info">
+        <view class="item-name">{{item.dishName}}</view>
+        <view class="item-bottom">
+          <view class="item-price">¥{{item.dishPrice}}</view>
+          <view class="item-quantity">x{{item.quantity}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="remark-card">
+    <text class="label">备注</text>
+    <input class="remark-input" placeholder="选填，请输入备注" bindinput="onRemarkInput" />
+  </view>
+
+  <!-- 金额明细 -->
+  <view class="amount-card">
+    <view class="amount-row">
+      <text>商品金额</text>
+      <text>¥{{totalAmount}}</text>
+    </view>
+    <view class="amount-row">
+      <text>配送费</text>
+      <text>¥{{deliveryFee}}</text>
+    </view>
+    <view class="amount-row total">
+      <text>合计</text>
+      <text class="total-price">¥{{actualAmount}}</text>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-bar">
+    <view class="submit-price">
+      <text>实付</text>
+      <text class="price">¥{{actualAmount}}</text>
+    </view>
+    <button class="submit-btn" bindtap="submitOrder">提交订单</button>
+  </view>
+</view>

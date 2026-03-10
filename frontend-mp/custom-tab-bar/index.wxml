@@ -1,0 +1,14 @@
+<view class="tab-bar">
+  <view class="tab-bar-item {{selected === 0 ? 'active' : ''}}" bindtap="switchTab" data-path="/pages/index/index" data-index="0">
+    <view class="tab-icon">🏠</view>
+    <view class="tab-text">首页</view>
+  </view>
+  <view class="tab-bar-item {{selected === 1 ? 'active' : ''}}" bindtap="switchTab" data-path="/pages/order/order" data-index="1">
+    <view class="tab-icon">📋</view>
+    <view class="tab-text">订单</view>
+  </view>
+  <view class="tab-bar-item {{selected === 2 ? 'active' : ''}}" bindtap="switchTab" data-path="/pages/mine/mine" data-index="2">
+    <view class="tab-icon">👤</view>
+    <view class="tab-text">我的</view>
+  </view>
+</view>

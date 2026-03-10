@@ -1,0 +1,11 @@
+<view class="skeleton" wx:if="{{loading}}">
+  <view class="skeleton-item" wx:for="{{count}}" wx:key="index">
+    <view class="skeleton-avatar {{animate ? 'skeleton-animate' : ''}}"></view>
+    <view class="skeleton-content">
+      <view class="skeleton-title {{animate ? 'skeleton-animate' : ''}}"></view>
+      <view class="skeleton-row {{animate ? 'skeleton-animate' : ''}}"></view>
+      <view class="skeleton-row short {{animate ? 'skeleton-animate' : ''}}"></view>
+    </view>
+  </view>
+</view>
+<slot wx:else></slot>

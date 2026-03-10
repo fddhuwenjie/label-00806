@@ -1,0 +1,33 @@
+# 测试环境配置
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://test-db:3306/food_delivery_test?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: ${TEST_DB_USERNAME:test}
+    password: ${TEST_DB_PASSWORD:test}
+    hikari:
+      minimum-idle: 3
+      maximum-pool-size: 15
+  data:
+    redis:
+      host: ${TEST_REDIS_HOST:test-redis}
+      port: 6379
+
+# 测试环境日志级别
+logging:
+  level:
+    com.fooddelivery: INFO
+    org.springframework.web: INFO
+
+# 测试环境启用 Swagger
+springdoc:
+  swagger-ui:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
