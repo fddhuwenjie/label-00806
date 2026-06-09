@@ -2,6 +2,7 @@ package com.fooddelivery.service.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,6 +11,8 @@ import com.fooddelivery.common.Constants;
 import com.fooddelivery.dto.OrderSubmitDTO;
 import com.fooddelivery.dto.PageQueryDTO;
 import com.fooddelivery.entity.*;
+import com.fooddelivery.mapper.DishMapper;
+import com.fooddelivery.mapper.MerchantMapper;
 import com.fooddelivery.mapper.OrderMapper;
 import com.fooddelivery.service.*;
 import com.fooddelivery.vo.CartVO;
@@ -36,6 +39,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private final MerchantService merchantService;
     private final DishService dishService;
     private final OrderItemService orderItemService;
+    private final DishMapper dishMapper;
+    private final MerchantMapper merchantMapper;
 
     @Override
     @Transactional
@@ -58,10 +63,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new BusinessException("商家不存在");
         }
 
-        // 计算总金额
+        // 计算总金额（从数据库重新查询菜品价格，防止TOCTOU竞态）
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (CartVO item : cartItems) {
-            totalAmount = totalAmount.add(item.getDishPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            Dish dish = dishService.getById(item.getDishId());
+            if (dish == null) {
+                throw new BusinessException("菜品不存在: " + item.getDishName());
+            }
+            if (dish.getPrice().compareTo(item.getDishPrice()) != 0) {
+                throw new BusinessException("菜品价格已变动，请重新下单");
+            }
+            totalAmount = totalAmount.add(dish.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
         }
 
         // 检查起送价
@@ -97,21 +109,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             orderItem.setQuantity(item.getQuantity());
             orderItems.add(orderItem);
 
-            // 更新销量
-            Dish dish = dishService.getById(item.getDishId());
-            if (dish != null) {
-                dish.setSales(dish.getSales() + item.getQuantity());
-                dishService.updateById(dish);
-            }
+            // 原子更新销量（防止并发丢失更新）
+            dishMapper.update(null, new LambdaUpdateWrapper<Dish>()
+                    .eq(Dish::getId, item.getDishId())
+                    .setSql("sales = sales + " + item.getQuantity()));
         }
         orderItemService.saveBatch(orderItems);
 
         // 清空购物车
         cartService.clearCart(userId, dto.getMerchantId());
 
-        // 更新商家月销量
-        merchant.setMonthlySales(merchant.getMonthlySales() + 1);
-        merchantService.updateById(merchant);
+        // 原子更新商家月销量
+        merchantMapper.update(null, new LambdaUpdateWrapper<Merchant>()
+                .eq(Merchant::getId, dto.getMerchantId())
+                .setSql("monthly_sales = monthly_sales + 1"));
 
         log.info("订单提交成功: orderNo={}", order.getOrderNo());
 
@@ -223,6 +234,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
+    @Transactional
     public void cancelOrder(Long userId, Long id) {
         Order order = getById(id);
         if (order == null || !order.getUserId().equals(userId)) {
@@ -235,6 +247,21 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         order.setStatus(Constants.ORDER_CANCELLED);
         updateById(order);
+
+        // 回滚菜品销量
+        List<OrderItem> orderItems = orderItemService.list(new LambdaQueryWrapper<OrderItem>()
+                .eq(OrderItem::getOrderId, id));
+        for (OrderItem item : orderItems) {
+            dishMapper.update(null, new LambdaUpdateWrapper<Dish>()
+                    .eq(Dish::getId, item.getDishId())
+                    .setSql("sales = sales - " + item.getQuantity()));
+        }
+
+        // 回滚商家月销量
+        merchantMapper.update(null, new LambdaUpdateWrapper<Merchant>()
+                .eq(Merchant::getId, order.getMerchantId())
+                .setSql("monthly_sales = monthly_sales - 1"));
+
         log.info("订单取消: id={}", id);
     }
 
@@ -291,8 +318,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
+    @Transactional
     public void autoCancelExpiredOrders() {
-        // 查找15分钟前创建且未支付的订单
         LocalDateTime expireTime = LocalDateTime.now().minusMinutes(15);
         List<Order> expiredOrders = list(new LambdaQueryWrapper<Order>()
                 .eq(Order::getStatus, Constants.ORDER_PENDING_PAY)
@@ -301,6 +328,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         for (Order order : expiredOrders) {
             order.setStatus(Constants.ORDER_CANCELLED);
             updateById(order);
+
+            List<OrderItem> orderItems = orderItemService.list(new LambdaQueryWrapper<OrderItem>()
+                    .eq(OrderItem::getOrderId, order.getId()));
+            for (OrderItem item : orderItems) {
+                dishMapper.update(null, new LambdaUpdateWrapper<Dish>()
+                        .eq(Dish::getId, item.getDishId())
+                        .setSql("sales = sales - " + item.getQuantity()));
+            }
+
+            merchantMapper.update(null, new LambdaUpdateWrapper<Merchant>()
+                    .eq(Merchant::getId, order.getMerchantId())
+                    .setSql("monthly_sales = monthly_sales - 1"));
+
             log.info("订单超时自动取消: id={}, orderNo={}", order.getId(), order.getOrderNo());
         }
 
