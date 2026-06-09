@@ -2,6 +2,7 @@ package com.fooddelivery.service.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,7 +25,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -58,10 +61,29 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new BusinessException("商家不存在");
         }
 
-        // 计算总金额
+        // 从数据库重新查询菜品价格，验证价格是否变动
+        List<Long> dishIds = cartItems.stream().map(CartVO::getDishId).toList();
+        List<Dish> dishes = dishService.listByIds(dishIds);
+        if (dishes.size() != cartItems.size()) {
+            throw new BusinessException("部分菜品不存在或已下架");
+        }
+
+        // 构建菜品ID到菜品对象的映射
+        Map<Long, Dish> dishMap = dishes.stream()
+                .collect(Collectors.toMap(Dish::getId, d -> d));
+
+        // 验证价格并计算总金额
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (CartVO item : cartItems) {
-            totalAmount = totalAmount.add(item.getDishPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            Dish dish = dishMap.get(item.getDishId());
+            if (dish == null) {
+                throw new BusinessException("菜品不存在");
+            }
+            // 比对价格，不一致则抛出异常
+            if (dish.getPrice().compareTo(item.getDishPrice()) != 0) {
+                throw new BusinessException("菜品价格已变动，请刷新后重新下单");
+            }
+            totalAmount = totalAmount.add(dish.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
         }
 
         // 检查起送价
@@ -97,21 +119,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             orderItem.setQuantity(item.getQuantity());
             orderItems.add(orderItem);
 
-            // 更新销量
-            Dish dish = dishService.getById(item.getDishId());
-            if (dish != null) {
-                dish.setSales(dish.getSales() + item.getQuantity());
-                dishService.updateById(dish);
-            }
+            // 使用原子更新增加菜品销量
+            LambdaUpdateWrapper<Dish> dishUpdateWrapper = new LambdaUpdateWrapper<>();
+            dishUpdateWrapper.eq(Dish::getId, item.getDishId())
+                    .setSql("sales = sales + " + item.getQuantity());
+            dishService.update(dishUpdateWrapper);
         }
         orderItemService.saveBatch(orderItems);
 
         // 清空购物车
         cartService.clearCart(userId, dto.getMerchantId());
 
-        // 更新商家月销量
-        merchant.setMonthlySales(merchant.getMonthlySales() + 1);
-        merchantService.updateById(merchant);
+        // 使用原子更新增加商家月销量
+        LambdaUpdateWrapper<Merchant> merchantUpdateWrapper = new LambdaUpdateWrapper<>();
+        merchantUpdateWrapper.eq(Merchant::getId, dto.getMerchantId())
+                .setSql("monthly_sales = monthly_sales + 1");
+        merchantService.update(merchantUpdateWrapper);
 
         log.info("订单提交成功: orderNo={}", order.getOrderNo());
 
@@ -223,6 +246,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
+    @Transactional
     public void cancelOrder(Long userId, Long id) {
         Order order = getById(id);
         if (order == null || !order.getUserId().equals(userId)) {
@@ -232,6 +256,24 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         if (order.getStatus() != Constants.ORDER_PENDING_PAY) {
             throw new BusinessException("当前状态不可取消");
         }
+
+        // 查询订单明细
+        List<OrderItem> orderItems = orderItemService.list(new LambdaQueryWrapper<OrderItem>()
+                .eq(OrderItem::getOrderId, id));
+
+        // 回滚菜品销量
+        for (OrderItem item : orderItems) {
+            LambdaUpdateWrapper<Dish> dishUpdateWrapper = new LambdaUpdateWrapper<>();
+            dishUpdateWrapper.eq(Dish::getId, item.getDishId())
+                    .setSql("sales = sales - " + item.getQuantity());
+            dishService.update(dishUpdateWrapper);
+        }
+
+        // 回滚商家月销量
+        LambdaUpdateWrapper<Merchant> merchantUpdateWrapper = new LambdaUpdateWrapper<>();
+        merchantUpdateWrapper.eq(Merchant::getId, order.getMerchantId())
+                .setSql("monthly_sales = monthly_sales - 1");
+        merchantService.update(merchantUpdateWrapper);
 
         order.setStatus(Constants.ORDER_CANCELLED);
         updateById(order);
@@ -291,6 +333,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
+    @Transactional
     public void autoCancelExpiredOrders() {
         // 查找15分钟前创建且未支付的订单
         LocalDateTime expireTime = LocalDateTime.now().minusMinutes(15);
@@ -299,6 +342,24 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 .lt(Order::getCreateTime, expireTime));
 
         for (Order order : expiredOrders) {
+            // 查询订单明细
+            List<OrderItem> orderItems = orderItemService.list(new LambdaQueryWrapper<OrderItem>()
+                    .eq(OrderItem::getOrderId, order.getId()));
+
+            // 回滚菜品销量
+            for (OrderItem item : orderItems) {
+                LambdaUpdateWrapper<Dish> dishUpdateWrapper = new LambdaUpdateWrapper<>();
+                dishUpdateWrapper.eq(Dish::getId, item.getDishId())
+                        .setSql("sales = sales - " + item.getQuantity());
+                dishService.update(dishUpdateWrapper);
+            }
+
+            // 回滚商家月销量
+            LambdaUpdateWrapper<Merchant> merchantUpdateWrapper = new LambdaUpdateWrapper<>();
+            merchantUpdateWrapper.eq(Merchant::getId, order.getMerchantId())
+                    .setSql("monthly_sales = monthly_sales - 1");
+            merchantService.update(merchantUpdateWrapper);
+
             order.setStatus(Constants.ORDER_CANCELLED);
             updateById(order);
             log.info("订单超时自动取消: id={}, orderNo={}", order.getId(), order.getOrderNo());
